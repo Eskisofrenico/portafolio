@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,12 +20,12 @@ const ContactSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    company: '',
-    project: '',
-    budget: '',
-    message: ''
+    name: "",
+    email: "",
+    company: "",
+    project: "",
+    budget: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -46,9 +46,9 @@ const ContactSection = () => {
           opacity: 1,
           y: 0,
           duration: 1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
-      }
+      },
     });
 
     // Form animation
@@ -61,21 +61,23 @@ const ContactSection = () => {
           y: 0,
           duration: 0.8,
           stagger: 0.1,
-          ease: "power2.out"
+          ease: "power2.out",
         });
-      }
+      },
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -84,7 +86,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setIsSubmitting(false);
     setIsSuccess(true);
@@ -92,26 +94,30 @@ const ContactSection = () => {
     // Reset form after success
     setTimeout(() => {
       setFormData({
-        name: '',
-        email: '',
-        company: '',
-        project: '',
-        budget: '',
-        message: ''
+        name: "",
+        email: "",
+        company: "",
+        project: "",
+        budget: "",
+        message: "",
       });
       setIsSuccess(false);
     }, 3000);
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="py-32 px-6 max-w-7xl mx-auto">
+    <section
+      id="contact"
+      ref={sectionRef}
+      className="py-32 px-6 max-w-7xl mx-auto"
+    >
       {/* Section Title */}
       <div className="mb-24">
-        <h2 
+        <h2
           ref={titleRef}
           className="font-display text-6xl md:text-8xl lg:text-[10rem] font-black text-center mb-8 opacity-0 translate-y-16"
         >
-          <span className="text-outline">LET'S</span>
+          <span className="text-outline">LET&apos;S</span>
           <br />
           <span className="text-gold-gradient">CONNECT</span>
         </h2>
@@ -125,8 +131,9 @@ const ContactSection = () => {
               Construyamos algo extraordinario juntos
             </h3>
             <p className="text-lg text-platinum/80 leading-relaxed">
-              ¿Tienes una visión ambiciosa? Hablemos sobre cómo podemos transformar 
-              tu idea en una experiencia digital memorable que supere todas las expectativas.
+              ¿Tienes una visión ambiciosa? Hablemos sobre cómo podemos transformar
+              tu idea en una experiencia digital memorable que supere todas las
+              expectativas.
             </p>
           </div>
 
@@ -137,8 +144,8 @@ const ContactSection = () => {
               </div>
               <div>
                 <h4 className="font-medium text-gold-primary mb-2">Email</h4>
-                <a 
-                  href="mailto:hello@creativestudio.com" 
+                <a
+                  href="mailto:hello@creativestudio.com"
                   className="text-platinum/80 hover:text-gold-primary transition-colors duration-300"
                   data-cursor="pointer"
                 >
@@ -153,8 +160,8 @@ const ContactSection = () => {
               </div>
               <div>
                 <h4 className="font-medium text-gold-primary mb-2">Teléfono</h4>
-                <a 
-                  href="tel:+1234567890" 
+                <a
+                  href="tel:+1234567890"
                   className="text-platinum/80 hover:text-gold-primary transition-colors duration-300"
                   data-cursor="pointer"
                 >
@@ -183,10 +190,10 @@ const ContactSection = () => {
               SÍGUENOS
             </h4>
             <div className="flex space-x-6">
-              {['Instagram', 'Behance', 'LinkedIn', 'Twitter'].map((social) => (
-                <a 
+              {["Instagram", "Behance", "LinkedIn", "Twitter"].map((social) => (
+                <a
                   key={social}
-                  href="#" 
+                  href="#"
                   className="text-platinum/60 hover:text-gold-primary transition-colors duration-300 magnetic"
                   data-cursor="pointer"
                 >
@@ -304,22 +311,38 @@ const ContactSection = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className={`w-full btn-luxury magnetic transition-all duration-300 ${
-                  isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                } ${isSuccess ? 'bg-green-600' : ''}`}
+                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                } ${isSuccess ? "bg-green-600" : ""}`}
                 data-cursor="pointer"
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-current"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Enviando...
                   </span>
                 ) : isSuccess ? (
-                  '¡Mensaje Enviado!'
+                  "¡Mensaje Enviado!"
                 ) : (
-                  'Enviar Mensaje'
+                  "Enviar Mensaje"
                 )}
               </button>
             </div>

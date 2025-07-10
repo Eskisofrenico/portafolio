@@ -17,7 +17,6 @@ import useSmoothScroll from '@/hooks/useSmoothScroll';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isReady, setIsReady] = useState(false);
 
   // Initialize smooth scroll
   useSmoothScroll();
@@ -39,7 +38,7 @@ export default function Home() {
     });
 
     Promise.all(imagePromises).then(() => {
-      setIsReady(true);
+      // setIsReady(true); // Eliminado
     });
   }, []);
 

@@ -65,7 +65,7 @@ const HeroSection = () => {
     const titleText = title.textContent || '';
     title.innerHTML = '';
     
-    titleText.split('').forEach((letter, index) => {
+    titleText.split('').forEach((letter) => {
       const span = document.createElement('span');
       span.textContent = letter === ' ' ? '\u00A0' : letter;
       span.style.display = 'inline-block';

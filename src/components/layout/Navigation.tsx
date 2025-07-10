@@ -6,18 +6,18 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const navItems = [
+  { id: 'hero', label: 'Inicio' },
+  { id: 'projects', label: 'Proyectos' },
+  { id: 'about', label: 'Estudio' },
+  { id: 'services', label: 'Servicios' },
+  { id: 'contact', label: 'Contacto' },
+];
+
 const Navigation = () => {
   const navRef = useRef<HTMLElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
-
-  const navItems = [
-    { id: 'hero', label: 'Inicio' },
-    { id: 'projects', label: 'Proyectos' },
-    { id: 'about', label: 'Estudio' },
-    { id: 'services', label: 'Servicios' },
-    { id: 'contact', label: 'Contacto' },
-  ];
 
   useEffect(() => {
     const nav = navRef.current;
@@ -46,7 +46,7 @@ const Navigation = () => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, []);
+  }, [navItems]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -77,7 +77,7 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
