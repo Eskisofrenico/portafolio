@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, Bebas_Neue } from "next/font/google";
 import "./globals.css";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-import useSmoothScroll from "@/hooks/useSmoothScroll";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ClientLayout from '@/components/ClientLayout';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -68,25 +65,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Inicializar Lenis solo una vez
-  useSmoothScroll();
-
-  // Reiniciar scroll y animaciones en cada cambio de ruta
-  const pathname = usePathname();
-  useEffect(() => {
-    // Reiniciar scroll al top en cada navegación
-    window.scrollTo(0, 0);
-    if (typeof ScrollTrigger !== "undefined" && ScrollTrigger.refresh) {
-      ScrollTrigger.refresh();
-    }
-  }, [pathname]);
-
   return (
     <html lang="es" className="scroll-smooth">
-      <body
-        className={`${inter.variable} ${playfair.variable} ${bebas.variable} antialiased noise-texture`}
-      >
-        {children}
+      <body className={`${inter.variable} ${playfair.variable} ${bebas.variable} antialiased noise-texture`}>
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
