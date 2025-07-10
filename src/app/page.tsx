@@ -1,103 +1,158 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+// Dynamic imports for better performance
+const CustomCursor = dynamic(() => import('@/components/ui/CustomCursor'), { ssr: false });
+const Loader = dynamic(() => import('@/components/ui/Loader'), { ssr: false });
+const Navigation = dynamic(() => import('@/components/layout/Navigation'), { ssr: false });
+const HeroSection = dynamic(() => import('@/components/sections/HeroSection'), { ssr: false });
+const ProjectsSection = dynamic(() => import('@/components/sections/ProjectsSection'), { ssr: false });
+const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), { ssr: false });
+const ContactSection = dynamic(() => import('@/components/sections/ContactSection'), { ssr: false });
+
+// Hooks
+import useSmoothScroll from '@/hooks/useSmoothScroll';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [isLoading, setIsLoading] = useState(true);
+  const [isReady, setIsReady] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  // Initialize smooth scroll
+  useSmoothScroll();
+
+  useEffect(() => {
+    // Preload critical resources
+    const preloadImages = [
+      '/api/placeholder/800/600',
+      '/api/placeholder/600/750',
+    ];
+
+    const imagePromises = preloadImages.map((src) => {
+      return new Promise((resolve) => {
+        const img = new window.Image();
+        img.onload = resolve;
+        img.onerror = resolve;
+        img.src = src;
+      });
+    });
+
+    Promise.all(imagePromises).then(() => {
+      setIsReady(true);
+    });
+  }, []);
+
+  const handleLoaderComplete = () => {
+    setIsLoading(false);
+  };
+
+  return (
+    <main className="relative">
+      {/* Custom Cursor */}
+      <CustomCursor />
+
+      {/* Loader */}
+      {isLoading && <Loader onComplete={handleLoaderComplete} />}
+
+      {/* Main Content */}
+      <div className={`transition-opacity duration-1000 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+        {/* Navigation */}
+        <Navigation />
+
+        {/* Hero Section */}
+        <HeroSection />
+
+        {/* Projects Section */}
+        <ProjectsSection />
+
+        {/* About Section */}
+        <AboutSection />
+
+        {/* Contact Section */}
+        <ContactSection />
+
+        {/* Footer */}
+        <footer className="py-16 px-6 border-t border-gold-primary/20">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+              {/* Logo and Description */}
+              <div className="md:col-span-2">
+                <h3 className="font-luxury text-3xl font-bold text-gold-gradient mb-4">
+                  CREATIVE STUDIO
+                </h3>
+                <p className="text-platinum/70 leading-relaxed max-w-md">
+                  Transformamos ideas en experiencias digitales extraordinarias. 
+                  Cada proyecto es una oportunidad para superar los límites de la creatividad.
+                </p>
+              </div>
+
+              {/* Quick Links */}
+              <div>
+                <h4 className="font-medium text-gold-primary mb-4 tracking-wide">
+                  NAVEGACIÓN
+                </h4>
+                <ul className="space-y-2">
+                  {['Inicio', 'Proyectos', 'Estudio', 'Contacto'].map((item) => (
+                    <li key={item}>
+                      <a 
+                        href={`#${item.toLowerCase()}`}
+                        className="text-platinum/60 hover:text-gold-primary transition-colors duration-300"
+                        data-cursor="pointer"
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Social Links */}
+              <div>
+                <h4 className="font-medium text-gold-primary mb-4 tracking-wide">
+                  SÍGUENOS
+                </h4>
+                <ul className="space-y-2">
+                  {['Instagram', 'Behance', 'LinkedIn', 'Twitter'].map((item) => (
+                    <li key={item}>
+                      <a 
+                        href="#"
+                        className="text-platinum/60 hover:text-gold-primary transition-colors duration-300"
+                        data-cursor="pointer"
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Copyright */}
+            <div className="border-t border-gold-primary/10 pt-8 flex flex-col md:flex-row justify-between items-center">
+              <p className="text-platinum/50 text-sm">
+                © 2024 Creative Studio. Todos los derechos reservados.
+              </p>
+              <div className="flex space-x-6 mt-4 md:mt-0">
+                <a 
+                  href="#" 
+                  className="text-platinum/50 hover:text-gold-primary transition-colors duration-300 text-sm"
+                  data-cursor="pointer"
+                >
+                  Política de Privacidad
+                </a>
+                <a 
+                  href="#" 
+                  className="text-platinum/50 hover:text-gold-primary transition-colors duration-300 text-sm"
+                  data-cursor="pointer"
+                >
+                  Términos de Servicio
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
   );
 }
